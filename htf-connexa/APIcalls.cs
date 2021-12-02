@@ -1,48 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace htf_connexa
 {
-    class Program
+    public class APIcalls
     {
-        static async Task Main(string[] args)
+        //Swagger 
+        // https://involved-htf-challenge.azurewebsites.net/swagger/index.html
+
+        HttpClient client;
+
+        public APIcalls(HttpClient client)
         {
-            //Connect code
+            this.client = client;
+            client.BaseAddress = new Uri("https://involved-htf-challenge.azurewebsites.net/");
+
+        }
+
+        public async void ()
+        {
             var client = new HttpClient();
+         
             client.BaseAddress = new Uri("http://involved-htf-challenge.azurewebsites.net");
+
             var token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9";
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-
-        }
-
-        private static async Task StartChallenge(HttpClient client, string startUrl)
-        {
+            var startUrl = "api/path/1/easy/Start";
             var startResponse = await client.GetAsync(startUrl);
-        }
 
-        private static async Task SolvePuzzle(HttpClient client, string puzzleUrl)
-        {
+            var puzzleUrl = "api/path/1/easy/Puzzle";
             var puzzleGetResponse = await client.GetFromJsonAsync<List<int>>(puzzleUrl);
 
             var puzzleAnswer = GetAnswer(puzzleGetResponse);
 
-            var puzzlePostResponse = await client.PostAsJsonAsync<int>(puzzleUrl, puzzleAnswer);
+            var puzzlePostResponse = await client.PostAsJsonAsync<int>(sampleUrl, puzzleAnswer);
             var puzzlePostResponseValue = await samplePostResponse.Content.ReadAsStringAsync();
-        }
-
-        private static async Task SolveSample(HttpClient client)
-        {
-            
-        }
-
-        private static object GetAnswer(object puzzleGetResponse)
-        {
-            throw new NotImplementedException();
         }
     }
 }
