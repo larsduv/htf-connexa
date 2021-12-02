@@ -9,9 +9,9 @@ namespace htf_connexa
 {
     public interface IChallenge
     {
-        public Task StartChallenge(HttpClient client, string startUrl);
-        public Task SolveSample(HttpClient client, string sampleUrl);
-        public Task SolvePuzzle(HttpClient client, string puzzleUrl);
+        public Task StartChallenge(HttpClient client);
+        //public Task SolveSample(HttpClient client);
+        //public Task SolvePuzzle(HttpClient client);
         public string startUrl { get; set; }
         public string puzzleUrl { get; set; }
         public string sampleUrl { get; set; }
