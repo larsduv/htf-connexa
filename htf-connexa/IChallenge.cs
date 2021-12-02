@@ -12,6 +12,7 @@ namespace htf_connexa
         public Task StartChallenge(HttpClient client, string startUrl);
         public Task SolveSample(HttpClient client, string sampleUrl);
         public Task SolvePuzzle(HttpClient client, string puzzleUrl);
+        public object GetAnswer(object puzzleGetResponse);
         public string startUrl { get; set; }
         public string puzzleUrl { get; set; }
         public string sampleUrl { get; set; }
