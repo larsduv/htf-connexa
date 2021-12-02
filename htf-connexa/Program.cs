@@ -20,7 +20,13 @@ namespace htf_connexa
             ChallengeA1 a1 = new ChallengeA1();
             //await a1.StartChallenge(client);
 
-            await a1.SolvePuzzle(client);
+            //await a1.SolvePuzzle(client);
+
+            ChallengeA2 a2 = new ChallengeA2();
+            await a2.StartChallenge(client);
+            await a2.GetSampleData(client);
+            await a2.SolveSample(client);
+            //await a2.GetPuzzleData(client);
 
             Console.ReadLine();
         }

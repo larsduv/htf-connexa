@@ -12,25 +12,25 @@ namespace htf_connexa
     {
 
         public string startUrl { get; set; }
-        public string puzzleUrl { get; set; }
         public string sampleUrl { get; set; }
+        public string puzzleUrl { get; set; }
         public List<int> PuzzleList { get; set; }
         public List<int> SampleList { get; set; }
-
+        
         public ChallengeA1()
         {
             startUrl = "api/path/1/easy/Start";
-            puzzleUrl = "api/path/1/easy/Puzzle";
+            sampleUrl = "api/path/1/easy/Puzzle";
             sampleUrl = "api/path/1/easy/Sample";
         }
 
         public async Task SolvePuzzle(HttpClient client)
         {
-            PuzzleList = await client.GetFromJsonAsync<List<int>>(puzzleUrl);
+            PuzzleList = await client.GetFromJsonAsync<List<int>>(sampleUrl);
 
             var puzzleAnswer = (int)GetAnswer();
 
-            var puzzlePostResponse = await client.PostAsJsonAsync<int>(puzzleUrl, puzzleAnswer);
+            var puzzlePostResponse = await client.PostAsJsonAsync<int>(sampleUrl, puzzleAnswer);
             var puzzlePostResponseValue = await puzzlePostResponse.Content.ReadAsStringAsync();
 
             Console.WriteLine("Puzzle response: " + puzzlePostResponseValue);
@@ -47,7 +47,7 @@ namespace htf_connexa
 
         }
 
-        public async Task SolveSample(HttpClient client, string sampleUrl)
+        public async Task SolveSample(HttpClient client)
         {
             var sampleGetResponse = await client.GetFromJsonAsync<List<int>>(sampleUrl);
 
