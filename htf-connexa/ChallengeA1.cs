@@ -10,40 +10,122 @@ namespace htf_connexa
 {
     public class ChallengeA1 : IChallenge
     {
-        private HttpResponseMessage samplePostResponse;
 
         public string startUrl { get; set; }
         public string puzzleUrl { get; set; }
         public string sampleUrl { get; set; }
+        public List<int> PuzzleList { get; set; }
+        public List<int> SampleList { get; set; }
 
         public ChallengeA1()
         {
+            startUrl = "api/path/1/easy/Start";
+            puzzleUrl = "api/path/1/easy/Puzzle";
+            sampleUrl = "api/path/1/easy/Sample";
         }
 
-        public async Task SolvePuzzle(HttpClient client, string puzzleUrl)
+        public async Task SolvePuzzle(HttpClient client)
         {
-            var puzzleGetResponse = await client.GetFromJsonAsync<List<int>>(puzzleUrl);
+            PuzzleList = await client.GetFromJsonAsync<List<int>>(puzzleUrl);
 
-            var puzzleAnswer = GetAnswer(puzzleGetResponse);
+            var puzzleAnswer = (int)GetAnswer();
 
             var puzzlePostResponse = await client.PostAsJsonAsync<int>(puzzleUrl, puzzleAnswer);
-            var puzzlePostResponseValue = await samplePostResponse.Content.ReadAsStringAsync();
+            var puzzlePostResponseValue = await puzzlePostResponse.Content.ReadAsStringAsync();
+
+            Console.WriteLine("Puzzle response: " + puzzlePostResponseValue);
         }
 
-        public Task SolveSample(HttpClient client, string sampleUrl)
+        public async Task GetSampleData(HttpClient client)
         {
-            throw new NotImplementedException();
+            SampleList = await client.GetFromJsonAsync<List<int>>(sampleUrl);
+
+            foreach (int i in SampleList)
+            {
+                Console.WriteLine(SampleList.IndexOf(i) + " : " + i);
+            }
+
         }
 
-        public Task StartChallenge(HttpClient client, string startUrl)
+        public async Task SolveSample(HttpClient client, string sampleUrl)
         {
-            throw new NotImplementedException();
+            var sampleGetResponse = await client.GetFromJsonAsync<List<int>>(sampleUrl);
+
+            int sampleAnswer = (int)GetSampleAnswer();
+
+            var samplePostResponse = await client.PostAsJsonAsync<int>(sampleUrl, sampleAnswer);
+            var samplePostResponseValue = await samplePostResponse.Content.ReadAsStringAsync();
+
+
+            Console.WriteLine("Puzzle response: " + samplePostResponseValue);
         }
 
-        public object GetAnswer(object puzzleGetResponse)
+        public object GetSampleAnswer()
         {
-            int number = 1;
-            return number;
+            bool moreThanOne = true;
+            int som = 0;
+
+            int[] data = SampleList.ToArray();
+
+            while (moreThanOne)
+            {
+                foreach (int j in data)
+                {
+                    som += j;
+                }
+                Console.WriteLine("Tussengetal= " + som);
+                char[] somString = som.ToString().ToCharArray();
+                int[] newData = Array.ConvertAll(somString, c => (int)Char.GetNumericValue(c));
+
+                if (newData.Count() == 1)
+                {
+                    moreThanOne = false;
+                }
+
+                data = newData;
+                som = 0;
+            }
+
+
+            return som;
+        }
+
+        public async Task StartChallenge(HttpClient client)
+        {
+            var startResponse = await client.GetAsync(startUrl);
+            Console.WriteLine("startResponse: " + startResponse);
+        }
+
+        public object GetAnswer()
+        {
+            foreach (int startD in PuzzleList)
+            {
+                Console.WriteLine(PuzzleList.IndexOf(startD) + " : " + startD);
+            }
+            bool moreThanOne = true;
+            int som = 0;
+            int[] data = PuzzleList.ToArray();
+
+            while (moreThanOne)
+            {
+                foreach (int j in data)
+                {
+                    som += j;
+                }
+                Console.WriteLine("Tussengetal= " + som);
+                char[] somString = som.ToString().ToCharArray();
+                int[] newData = Array.ConvertAll(somString, c => (int)Char.GetNumericValue(c));
+
+                data = newData;
+                som = 0;
+                if (newData.Count() == 1)
+                {
+                    moreThanOne = false;
+                }
+
+            }
+
+            return data[0];
         }
     }
 }
