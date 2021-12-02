@@ -14,35 +14,15 @@ namespace htf_connexa
             //Connect code
             var client = new HttpClient();
             client.BaseAddress = new Uri("http://involved-htf-challenge.azurewebsites.net");
-            var token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9";
+            var token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiNDYiLCJuYmYiOjE2Mzg0NDA1MjgsImV4cCI6MTYzODUyNjkyOCwiaWF0IjoxNjM4NDQwNTI4fQ.jtyWL_hCsex0srI9LpD8AR0GDm7sxCPdiDybLZGXilYiSzXlNS0c4IxAyWxb9HRoe_rjbsfJpWusakm894tOQg";
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+            ChallengeA1 a1 = new ChallengeA1();
+            //await a1.StartChallenge(client);
 
-        }
+            await a1.SolvePuzzle(client);
 
-        private static async Task StartChallenge(HttpClient client, string startUrl)
-        {
-            var startResponse = await client.GetAsync(startUrl);
-        }
-
-        private static async Task SolvePuzzle(HttpClient client, string puzzleUrl)
-        {
-            var puzzleGetResponse = await client.GetFromJsonAsync<List<int>>(puzzleUrl);
-
-            var puzzleAnswer = GetAnswer(puzzleGetResponse);
-
-            var puzzlePostResponse = await client.PostAsJsonAsync<int>(puzzleUrl, puzzleAnswer);
-            var puzzlePostResponseValue = await samplePostResponse.Content.ReadAsStringAsync();
-        }
-
-        private static async Task SolveSample(HttpClient client)
-        {
-            
-        }
-
-        private static object GetAnswer(object puzzleGetResponse)
-        {
-            throw new NotImplementedException();
+            Console.ReadLine();
         }
     }
 }
